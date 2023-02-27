@@ -101,7 +101,7 @@ require("lazy").setup({
       require("luasnip.loaders.from_vscode").lazy_load()
       cmp.setup({
         mapping = cmp.mapping.preset.insert({
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-b>"] = cmp.mapping.scroll_docs( -4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-o>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
@@ -220,21 +220,21 @@ require("lazy").setup({
           },
         },
       })
-    end,
-  },
-  ------------------------------------------------------------------------------
-  {
-    "williamboman/mason-lspconfig.nvim",
-    opts = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          "lua_ls",
+          "bashls",
+          "marksman",
+          "pylsp",
+        },
+        automatic_installation = true,
+      })
+
       local status_ok, mason_lspconfig = pcall(require, "mason-lspconfig")
       if not status_ok then
         vim.notify("Problem with mason-lspconfig")
         return
       end
-
-      mason_lspconfig.setup({
-        automatic_installation = true,
-      })
 
       ---@diagnostic disable-next-line: unused-local
       local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")
@@ -280,6 +280,10 @@ require("lazy").setup({
         end,
       })
     end,
+  },
+  ------------------------------------------------------------------------------
+  {
+    "williamboman/mason-lspconfig.nvim",
   },
   ------------------------------------------------------------------------------
   {
