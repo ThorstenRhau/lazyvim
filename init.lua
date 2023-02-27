@@ -16,6 +16,32 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  ------------------------------------------------------------------------------
+  defaults = {
+    lazy = true,
+    version = false,
+  },
+  ------------------------------------------------------------------------------
+  checker = {
+    enabled = true, -- Check for plugin updates
+  },
+  ------------------------------------------------------------------------------
+  performance = {
+    rtp = {
+      -- disable some rtp plugins
+      disabled_plugins = {
+        "gzip",
+        "matchit",
+        "matchparen",
+        "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
+  ------------------------------------------------------------------------------
   {
     "folke/tokyonight.nvim",
     lazy = false, -- make sure we load this during startup if it is your main colorscheme
@@ -27,7 +53,6 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "folke/which-key.nvim",
-    opts = {},
     event = "BufReadPost",
   },
   ------------------------------------------------------------------------------
@@ -37,23 +62,30 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "lua",
-        "markdown",
-        "markdown_inline",
-        "vim",
-      },
-      sync_install = false,
-      auto_install = true,
-      highlight = {
-        enable = true,
-      },
-    },
+    build = ":TSUpdate",
+    opts = function()
+      require("nvim-treesitter.configs").setup({
+        -- A list of parser names, or "all"
+        -- https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
+        ensure_installed = {
+          "lua",
+          "markdown",
+          "markdown_inline",
+          "vim",
+        },
+        -- Install parsers synchronously (only applied to `ensure_installed`)
+        sync_install = false,
+        auto_install = true,
+        highlight = {
+          enable = true,
+        },
+      })
+    end,
   },
   ------------------------------------------------------------------------------
   {
     "lewis6991/gitsigns.nvim",
+    event = "InsertEnter",
     opts = {},
   },
   ------------------------------------------------------------------------------
@@ -63,12 +95,13 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
     config = function()
       local cmp = require("cmp")
       require("luasnip.loaders.from_vscode").lazy_load()
       cmp.setup({
         mapping = cmp.mapping.preset.insert({
-          ["<C-b>"] = cmp.mapping.scroll_docs( -4),
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-o>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
@@ -366,6 +399,11 @@ require("lazy").setup({
         exclude = {}, -- tabout will ignore these filetypes
       })
     end,
+  },
+  ------------------------------------------------------------------------------
+  {
+    "dstein64/vim-startuptime",
+    cmd = "StartupTime",
   },
   ------------------------------------------------------------------------------
 })
