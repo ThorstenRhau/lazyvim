@@ -13,6 +13,7 @@ wk.register({
   ["<leader>."] = { "<cmd>Neotree toggle<cr>", "Toggle Neo Tree" },
   ["<leader>M"] = { "<cmd>Mason<cr>", "Mason package manager" },
   ["<leader>T"] = { "<cmd>Telescope<cr>", "Telescope search" },
+  ["<leader>l"] = { "<cmd>Lazy<cr>", "Lazy" },
   -- Switch between open tabs
   ["<leader>1"] = { "1gt<cr>", "Tab 1" },
   ["<leader>2"] = { "2gt<cr>", "Tab 2" },
@@ -56,11 +57,6 @@ wk.register({
       p = { "<cmd>Git pull<cr>", "Pull" },
       l = { "<cmd>Git log --oneline<cr>", "log --oneline" },
       L = { "<cmd>Git log<cr>", "log" },
-    },
-    p = {
-      name = "Packer",
-      s = { "<cmd>PackerSync<cr>", "Sync" },
-      c = { "<cmd>PackerCompile<cr>", "Compile" },
     },
     t = {
       name = "Tab",

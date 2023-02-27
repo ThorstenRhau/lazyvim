@@ -23,11 +23,12 @@ opt.expandtab = true
 -- Format options ,no help woth comments :-)
 vim.cmd([[ autocmd FileType * set formatoptions-=cro ]])
 
+-- No highlight search
+vim.cmd([[ set nohlsearch ]])
+
 opt.listchars = {
   -- Definíng symbols for hidden characters
-  eol = "$",
+  eol = "↴",
   tab = ">-",
-  lead = "•",
-  trail = "•",
-  space = "_",
+  space = "⋅",
 }
