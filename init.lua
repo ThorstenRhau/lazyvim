@@ -141,6 +141,6 @@ require("lazy").setup({
   },
 })
 
-require("config.autocmd")
-require("config.options")
-require("config.keymaps")
+require("autocmd")
+require("options")
+require("keymaps")
