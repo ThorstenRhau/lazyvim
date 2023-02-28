@@ -46,18 +46,45 @@ require("lazy").setup({
     "folke/tokyonight.nvim",
     lazy = false, -- make sure we load this during startup if it is your main colorscheme
     priority = 1000, -- make sure to load this before all the other start plugins
-    config = function()
-      vim.cmd([[colorscheme tokyonight]])
-    end,
+    opts = {
+      style = "moon",
+      light_style = "day",
+      transparent = false,
+      terminal_colors = true,
+      styles = {
+        -- Value is any valid attr-list value for `:help nvim_set_hl`
+        comments = { italic = true },
+        keywords = { italic = true },
+        functions = {},
+        variables = {},
+        -- Background styles. Can be "dark", "transparent" or "normal"
+        sidebars = "dark",
+        floats = "dark",
+      },
+      sidebars = { "qf", "help" },
+      day_brightness = 0.3, -- **Day** style. Number between 0 and 1, from dull to vibrant colors
+      hide_inactive_statusline = false,
+      dim_inactive = true,
+      lualine_bold = false,
+
+      ---@diagnostic disable-next-line: unused-local
+      on_colors = function(colors)
+      end,
+
+      ---@diagnostic disable-next-line: unused-local
+      on_highlights = function(highlights, colors)
+      end,
+    },
   },
   ------------------------------------------------------------------------------
   {
     "folke/which-key.nvim",
-    event = "BufReadPost",
+    event = "VeryLazy",
   },
   ------------------------------------------------------------------------------
   {
     "nvim-tree/nvim-web-devicons",
+    lazy = true,
   },
   ------------------------------------------------------------------------------
   {
@@ -90,71 +117,142 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "tpope/vim-fugitive",
+    cmd = "Git",
+  },
+  ------------------------------------------------------------------------------
+  {
+    "hrsh7th/cmp-nvim-lsp",
+    "hrsh7th/cmp-buffer",
+    "hrsh7th/cmp-path",
+    "saadparwaiz1/cmp_luasnip",
   },
   ------------------------------------------------------------------------------
   {
     "hrsh7th/nvim-cmp",
+    version = false, -- last release is way too old
     event = "InsertEnter",
-    config = function()
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "saadparwaiz1/cmp_luasnip",
+    },
+    opts = function()
       local cmp = require("cmp")
-      require("luasnip.loaders.from_vscode").lazy_load()
-      cmp.setup({
-        mapping = cmp.mapping.preset.insert({
-          ["<C-b>"] = cmp.mapping.scroll_docs( -4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-o>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-        }),
+      return {
+        completion = {
+          completeopt = "menu,menuone,noinsert",
+        },
         snippet = {
           expand = function(args)
             require("luasnip").lsp_expand(args.body)
           end,
         },
+        mapping = cmp.mapping.preset.insert({
+          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-b>"] = cmp.mapping.scroll_docs( -4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-e>"] = cmp.mapping.abort(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "luasnip" },
-        }, {
-          { name = "path" },
-          { name = "buffer", keyword_length = 5 },
+          { name = "buffer" },
+          { name = "path",    keyword_length = 5 },
         }),
+      }
+    end,
+  },
+  ------------------------------------------------------------------------------
+  {
+    "L3MON4D3/LuaSnip",
+    build = "make install_jsregexp",
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+      end,
+    },
+    opts = {
+      history = true,
+      delete_check_events = "TextChanged",
+    },
+  },
+  ------------------------------------------------------------------------------
+  {
+    "rafamadriz/friendly-snippets",
+    config = function()
+      require("luasnip.loaders.from_vscode").lazy_load()
+    end,
+  },
+  ------------------------------------------------------------------------------
+  {
+    "goolord/alpha-nvim",
+    event = "VimEnter",
+    opts = function()
+      local dashboard = require("alpha.themes.dashboard")
+      local logo = [[
+                  _   _ ________  ___
+thorre edition   | | | |_   _|  \/  |
+ _ __   ___  ___ | | | | | | | .  . |
+| '_ \ / _ \/ _ \| | | | | | | |\/| |
+| | | |  __/ (_) \ \_/ /_| |_| |  | |
+|_| |_|\___|\___/ \___/ \___/\_|  |_/
+    ]]
+
+      dashboard.section.header.val = vim.split(logo, "\n")
+      dashboard.section.buttons.val = {
+        dashboard.button("f", " " .. " Find file", ":Telescope find_files <CR>"),
+        dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
+        dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles <CR>"),
+        dashboard.button("g", " " .. " Find text", ":Telescope live_grep <CR>"),
+        dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
+        dashboard.button("s", "󰑓 " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
+        dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
+        dashboard.button("q", " " .. " Quit", ":qa<CR>"),
+      }
+      for _, button in ipairs(dashboard.section.buttons.val) do
+        button.opts.hl = "AlphaButtons"
+        button.opts.hl_shortcut = "AlphaShortcut"
+      end
+      dashboard.section.footer.opts.hl = "Type"
+      dashboard.section.header.opts.hl = "AlphaHeader"
+      dashboard.section.buttons.opts.hl = "AlphaButtons"
+      dashboard.opts.layout[1].val = 8
+      return dashboard
+    end,
+    config = function(_, dashboard)
+      -- close Lazy and re-open when the dashboard is ready
+      if vim.o.filetype == "lazy" then
+        vim.cmd.close()
+        vim.api.nvim_create_autocmd("User", {
+          pattern = "AlphaReady",
+          callback = function()
+            require("lazy").show()
+          end,
+        })
+      end
+
+      require("alpha").setup(dashboard.opts)
+
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "LazyVimStarted",
+        callback = function()
+          local stats = require("lazy").stats()
+          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+          dashboard.section.footer.val = "⚡ Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms"
+          pcall(vim.cmd.AlphaRedraw)
+        end,
       })
     end,
   },
   ------------------------------------------------------------------------------
   {
-    "hrsh7th/cmp-nvim-lsp",
-  },
-  ------------------------------------------------------------------------------
-  {
-    "hrsh7th/cmp-buffer",
-  },
-  ------------------------------------------------------------------------------
-  {
-    "hrsh7th/cmp-path",
-  },
-  ------------------------------------------------------------------------------
-  {
-    "L3MON4D3/LuaSnip",
-  },
-  ------------------------------------------------------------------------------
-  {
-    "saadparwaiz1/cmp_luasnip",
-  },
-  ------------------------------------------------------------------------------
-  {
-    "rafamadriz/friendly-snippets",
-  },
-  ------------------------------------------------------------------------------
-  {
-    "goolord/alpha-nvim",
-    config = function()
-      require("alpha").setup(require("alpha.themes.startify").config)
-    end,
-  },
-  ------------------------------------------------------------------------------
-  {
     "windwp/nvim-autopairs",
+    event = "InsertEnter",
     opts = {
       disable_filetype = { "TelescopePrompt", "vim" },
     },
@@ -162,14 +260,39 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "anuvyklack/pretty-fold.nvim",
+    event = "InsertEnter",
   },
   ------------------------------------------------------------------------------
   {
     "lukas-reineke/indent-blankline.nvim",
     opts = {
-      show_current_context = true,
-      show_current_context_start = true,
+      char = "│",
+      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
+      show_current_context = false,
+      show_current_context_start = false,
     },
+  },
+  ------------------------------------------------------------------------------
+  {
+    "echasnovski/mini.indentscope",
+    version = false, -- wait till new 0.7.0 release to put it back on semver
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      -- symbol = "▏",
+      symbol = "│",
+      options = { try_as_border = true },
+    },
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
+        callback = function()
+          vim.b.miniindentscope_disable = true
+        end,
+      })
+    end,
+    config = function(_, opts)
+      require("mini.indentscope").setup(opts)
+    end,
   },
   ------------------------------------------------------------------------------
   {
@@ -181,10 +304,20 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "nvim-neo-tree/neo-tree.nvim",
+    cmd = "Neotree",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
+    },
+    opts = {
+      filesystem = {
+        bind_to_cwd = false,
+        follow_current_file = true,
+      },
+      window = {
+        width = 24,
+      },
     },
   },
   ------------------------------------------------------------------------------
@@ -194,7 +327,7 @@ require("lazy").setup({
       "nvim-tree/nvim-web-devicons",
     },
     opts = {
-      extensions = { "quickfix", "fugitive", "symbols-outline" },
+      extensions = { "neo-tree", "quickfix", "fugitive", "symbols-outline" },
     },
   },
   ------------------------------------------------------------------------------
@@ -331,6 +464,7 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "nvim-telescope/telescope.nvim",
+    cmd = "Telescope",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",
@@ -381,36 +515,65 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "abecodes/tabout.nvim",
+    event = "InsertEnter",
     dependencies = {
       "nvim-treesitter",
     },
-    opts = function()
-      require("tabout").setup({
-        tabkey = "<Tab>", -- key to trigger tabout, set to an empty string to disable
-        backwards_tabkey = "<S-Tab>", -- key to trigger backwards tabout, set to an empty string to disable
-        act_as_tab = true, -- shift content if tab out is not possible
-        act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
-        default_tab = "<C-t>", -- shift default action (only at the beginning of a line, otherwise <TAB> is used)
-        default_shift_tab = "<C-d>", -- reverse shift default action,
-        enable_backwards = true, -- well ...
-        completion = true, -- if the tabkey is used in a completion pum
-        tabouts = {
-          { open = "'", close = "'" },
-          { open = '"', close = '"' },
-          { open = "`", close = "`" },
-          { open = "(", close = ")" },
-          { open = "[", close = "]" },
-          { open = "{", close = "}" },
-        },
-        ignore_beginning = true, --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
-        exclude = {}, -- tabout will ignore these filetypes
-      })
-    end,
+    opts = {},
   },
   ------------------------------------------------------------------------------
   {
     "dstein64/vim-startuptime",
     cmd = "StartupTime",
+  },
+  ------------------------------------------------------------------------------
+  {
+    "RRethy/vim-illuminate",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = { delay = 300 },
+    config = function(_, opts)
+      require("illuminate").configure(opts)
+
+      local function map(key, dir, buffer)
+        vim.keymap.set("n", key, function()
+          require("illuminate")["goto_" .. dir .. "_reference"](false)
+        end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+      end
+
+      map("]]", "next")
+      map("[[", "prev")
+
+      -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          local buffer = vim.api.nvim_get_current_buf()
+          map("]]", "next", buffer)
+          map("[[", "prev", buffer)
+        end,
+      })
+    end,
+    keys = {
+      { "]]", desc = "Next Reference" },
+      { "[[", desc = "Prev Reference" },
+    },
+  },
+  ------------------------------------------------------------------------------
+  {
+    "folke/trouble.nvim",
+    cmd = { "TroubleToggle", "Trouble" },
+    opts = { use_diagnostic_signs = true },
+  },
+  ------------------------------------------------------------------------------
+  {
+    "folke/persistence.nvim",
+    event = "BufReadPre",
+    opts = { options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals" } },
+    -- stylua: ignore
+    keys = {
+      { "<leader>sr", function() require("persistence").load() end,                desc = "Restore Session" },
+      { "<leader>sp", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
+      { "<leader>sd", function() require("persistence").stop() end,                desc = "Don't Save Current Session" },
+    },
   },
   ------------------------------------------------------------------------------
 })
