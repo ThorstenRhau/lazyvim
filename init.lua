@@ -139,7 +139,7 @@ require("lazy").setup({
   {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
-    event = "InsertEnter",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
@@ -178,7 +178,7 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "L3MON4D3/LuaSnip",
-    event = { "VeryLazy" },
+    event = { "BufReadPre", "BufNewFile" },
     build = "make install_jsregexp",
     dependencies = {
       "rafamadriz/friendly-snippets",
@@ -194,6 +194,7 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "rafamadriz/friendly-snippets",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("luasnip.loaders.from_vscode").lazy_load()
     end,
