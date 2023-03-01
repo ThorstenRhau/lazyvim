@@ -373,6 +373,7 @@ thorre edition   | | | |_   _|  \/  |
           "bashls",
           "marksman",
           "pylsp",
+          "html",
         },
         automatic_installation = true,
       })
