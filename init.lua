@@ -44,8 +44,7 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "folke/tokyonight.nvim",
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
+    lazy = true, -- make sure we load this during startup if it is your main colorscheme
     opts = {
       style = "moon",
       light_style = "day",
@@ -68,12 +67,10 @@ require("lazy").setup({
       lualine_bold = false,
 
       ---@diagnostic disable-next-line: unused-local
-      on_colors = function(colors)
-      end,
+      on_colors = function(colors) end,
 
       ---@diagnostic disable-next-line: unused-local
-      on_highlights = function(highlights, colors)
-      end,
+      on_highlights = function(highlights, colors) end,
     },
   },
   ------------------------------------------------------------------------------
@@ -84,11 +81,12 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "nvim-tree/nvim-web-devicons",
-    lazy = true,
+    event = "VeryLazy",
   },
   ------------------------------------------------------------------------------
   {
     "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile" },
     build = ":TSUpdate",
     opts = function()
       require("nvim-treesitter.configs").setup({
@@ -112,6 +110,7 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {},
   },
   ------------------------------------------------------------------------------
@@ -122,9 +121,19 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "hrsh7th/cmp-nvim-lsp",
+    event = { "BufReadPre", "BufNewFile" },
+  },
+  {
     "hrsh7th/cmp-buffer",
+    event = { "BufReadPre", "BufNewFile" },
+  },
+  {
     "hrsh7th/cmp-path",
+    event = { "BufReadPre", "BufNewFile" },
+  },
+  {
     "saadparwaiz1/cmp_luasnip",
+    event = { "BufReadPre", "BufNewFile" },
   },
   ------------------------------------------------------------------------------
   {
@@ -151,7 +160,7 @@ require("lazy").setup({
         mapping = cmp.mapping.preset.insert({
           ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
           ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-b>"] = cmp.mapping.scroll_docs( -4),
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
@@ -161,7 +170,7 @@ require("lazy").setup({
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "buffer" },
-          { name = "path",    keyword_length = 5 },
+          { name = "path", keyword_length = 5 },
         }),
       }
     end,
@@ -169,6 +178,7 @@ require("lazy").setup({
   ------------------------------------------------------------------------------
   {
     "L3MON4D3/LuaSnip",
+    event = { "VeryLazy" },
     build = "make install_jsregexp",
     dependencies = {
       "rafamadriz/friendly-snippets",
@@ -265,6 +275,7 @@ thorre edition   | | | |_   _|  \/  |
   ------------------------------------------------------------------------------
   {
     "lukas-reineke/indent-blankline.nvim",
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       char = "│",
       filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
@@ -297,6 +308,7 @@ thorre edition   | | | |_   _|  \/  |
   ------------------------------------------------------------------------------
   {
     "crispgm/nvim-tabline",
+    event = "VeryLazy",
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
@@ -323,6 +335,7 @@ thorre edition   | | | |_   _|  \/  |
   ------------------------------------------------------------------------------
   {
     "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
@@ -333,6 +346,7 @@ thorre edition   | | | |_   _|  \/  |
   ------------------------------------------------------------------------------
   {
     "williamboman/mason.nvim",
+    cmd = "Mason",
     dependencies = {
       "williamboman/mason-lspconfig.nvim",
       "neovim/nvim-lspconfig",
@@ -416,14 +430,17 @@ thorre edition   | | | |_   _|  \/  |
   ------------------------------------------------------------------------------
   {
     "williamboman/mason-lspconfig.nvim",
+    event = { "BufReadPre", "BufNewFile" },
   },
   ------------------------------------------------------------------------------
   {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
   },
   ------------------------------------------------------------------------------
   {
     "j-hui/fidget.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     opts = function()
       require("fidget").setup()
     end,
@@ -431,6 +448,7 @@ thorre edition   | | | |_   _|  \/  |
   ------------------------------------------------------------------------------
   {
     "jose-elias-alvarez/null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "jay-babu/mason-null-ls.nvim",
     },
@@ -450,6 +468,7 @@ thorre edition   | | | |_   _|  \/  |
   ------------------------------------------------------------------------------
   {
     "jay-babu/mason-null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     opts = function()
       require("mason-null-ls").setup({
         ensure_installed = {
@@ -499,6 +518,7 @@ thorre edition   | | | |_   _|  \/  |
   ------------------------------------------------------------------------------
   {
     "nvim-telescope/telescope-file-browser.nvim",
+    cmd = "Telescope file_browser",
   },
   ------------------------------------------------------------------------------
   {
