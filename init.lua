@@ -461,6 +461,7 @@ thorre edition   | | | |_   _|  \/  |
           null_ls.builtins.formatting.autopep8, -- Python
           null_ls.builtins.formatting.shfmt, -- Shell script
           null_ls.builtins.formatting.stylua, -- Lua
+          null_ls.builtins.formatting.prettier, -- HTML et.al.
         },
       })
     end,
@@ -476,6 +477,7 @@ thorre edition   | | | |_   _|  \/  |
           "autopep8",
           "shfmt",
           "stylua",
+          "prettier",
         },
       })
     end,
