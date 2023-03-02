@@ -6,10 +6,10 @@ return {
     run = "compile",
     opts = {
       compile_path = vim.fn.stdpath "cache" .. "/catppuccin",
-      flavour = "mocha", -- latte, frappe, macchiato, mocha
+      flavour = "macchiato", -- latte, frappe, macchiato, mocha
       background = {
         light = "latte",
-        dark = "mocha",
+        dark = "macchiato",
       },
       transparent_background = false,
       show_end_of_buffer = false, -- show the '~' characters after the end of buffers
