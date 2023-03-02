@@ -54,4 +54,7 @@ require("autocmd")
 require("options")
 require("keymaps")
 
+-- vim.cmd.colorscheme("gruvbox")
+-- vim.cmd.colorscheme("solarized")
+-- vim.cmd.colorscheme("onedark")
 vim.cmd.colorscheme("tokyonight")
