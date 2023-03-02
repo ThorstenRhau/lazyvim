@@ -16,37 +16,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  ------------------------------------------------------------------------------
-  defaults = {
-    lazy = true,
-    version = false,
-  },
-  ------------------------------------------------------------------------------
-  checker = {
-    enabled = true, -- Check for plugin updates
-  },
-  ------------------------------------------------------------------------------
-  performance = {
-    rtp = {
-      -- disable some rtp plugins
-      disabled_plugins = {
-        "gzip",
-        "matchit",
-        "matchparen",
-        "netrwPlugin",
-        "tarPlugin",
-        "tohtml",
-        "tutor",
-        "zipPlugin",
-      },
-    },
-  },
-  ------------------------------------------------------------------------------
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
   },
-  ------------------------------------------------------------------------------
   { import = "plugins" }, -- This loads all plugins from lua/plugins directory
 })
 
