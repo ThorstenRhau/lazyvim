@@ -6,7 +6,7 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     opts = {
-      extensions = { "neo-tree", "quickfix", "fugitive", "symbols-outline" },
+      extensions = { "nvim-tree", "quickfix", "fugitive", "symbols-outline" },
     },
   },
 }

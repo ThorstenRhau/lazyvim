@@ -9,7 +9,7 @@ vim.keymap.set("n", "<c-t>", ":Telescope<CR>")
 -- Setting up register for 'which key' with keymappings
 local wk = require("which-key")
 wk.register({
-  ["<leader>."] = { "<cmd>Neotree toggle<cr>", "Toggle Neo Tree" },
+  ["<leader>."] = { "<cmd>NvimTreeToggle<cr>", "Nvim Tree" },
   ["<leader>M"] = { "<cmd>Mason<cr>", "Mason package manager" },
   ["<leader>T"] = { "<cmd>Telescope<cr>", "Telescope search" },
   ["<leader>l"] = { "<cmd>Lazy<cr>", "Lazy" },

@@ -8,6 +8,7 @@ return {
       "MunifTanjim/nui.nvim",
     },
     opts = {
+      branch = "v2.x",
       filesystem = {
         bind_to_cwd = false,
         follow_current_file = true,

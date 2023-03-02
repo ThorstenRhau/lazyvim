@@ -4,7 +4,7 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       char = "│",
-      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
+      filetype_exclude = { "help", "alpha", "dashboard", "nvim-tree", "Trouble", "lazy" },
       show_current_context = false,
       show_current_context_start = false,
     },
