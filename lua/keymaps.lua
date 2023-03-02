@@ -46,8 +46,8 @@ wk.register({
       t = { "<cmd>Telescope<cr>", "Telescope" },
       h = { "<cmd>Telescope help_tags<cr>", "Help Tags" },
       B = { "<cmd>Telescope buffers<cr>", "Buffers" },
-      g = { "<cmd>Telescope grep_string<cr>", "Grep strings" },
-      s = { "<cmd>Telescope live_grep<cr>", "Live grep" },
+      s = { "<cmd>Telescope grep_string<cr>", "Grep strings" },
+      g = { "<cmd>Telescope live_grep<cr>", "Live grep" },
     },
     g = {
       name = "Git",
