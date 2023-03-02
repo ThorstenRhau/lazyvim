@@ -18,15 +18,55 @@ if not vim.loop.fs_stat(lazypath) then
 end
 
 vim.opt.rtp:prepend(lazypath)
-
+-----------------------------------------------------------------------------
 require("lazy").setup({
+  {
+    "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile" },
+    build = ":TSUpdate",
+    opts = function()
+      require("nvim-treesitter.configs").setup({
+        -- A list of parser names, or "all"
+        -- https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
+        ensure_installed = {
+          "lua",
+          "markdown",
+          "markdown_inline",
+          "vim",
+        },
+        -- Install parsers synchronously (only applied to `ensure_installed`)
+        sync_install = false,
+        auto_install = true,
+        highlight = {
+          enable = true,
+        },
+      })
+    end,
+  },
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    opts = {
+      disable_filetype = { "TelescopePrompt", "vim" },
+    },
+  },
+  {
+    "abecodes/tabout.nvim",
+    event = "InsertEnter",
+    dependencies = {
+      "nvim-treesitter",
+    },
+    opts = {},
+  },
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
   },
+  -----------------------------------------------------------------------------
   { import = "plugins" }, -- This loads all plugins from lua/plugins directory
 })
 
+-----------------------------------------------------------------------------
 require("autocmd")
 require("options")
 require("keymaps")
