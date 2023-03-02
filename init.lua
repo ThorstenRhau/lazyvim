@@ -53,3 +53,5 @@ require("lazy").setup({
 require("autocmd")
 require("options")
 require("keymaps")
+
+vim.cmd.colorscheme("tokyonight")

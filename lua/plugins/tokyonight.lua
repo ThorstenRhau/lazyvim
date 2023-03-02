@@ -23,11 +23,9 @@ return {
       dim_inactive = true,
       lualine_bold = false,
       ---@diagnostic disable-next-line: unused-local
-      on_colors = function(colors)
-      end,
+      on_colors = function(colors) end,
       ---@diagnostic disable-next-line: unused-local
-      on_highlights = function(highlights, colors)
-      end,
+      on_highlights = function(highlights, colors) end,
     },
   },
 }

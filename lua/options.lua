@@ -16,7 +16,7 @@ opt.ignorecase = true -- Ignore case
 opt.smartcase = true -- Respect case for capital letters
 opt.termguicolors = true -- 24bit colors
 opt.winblend = 0
-opt.wildoptions = 'pum'
+opt.wildoptions = "pum"
 opt.pumblend = 5
 
 opt.title = true
@@ -26,14 +26,14 @@ opt.hlsearch = true
 opt.showcmd = true
 opt.cmdheight = 1
 opt.laststatus = 2
-opt.backupskip = { '/tmp/*', '/private/tmp/*' }
-opt.inccommand = 'split'
+opt.backupskip = { "/tmp/*", "/private/tmp/*" }
+opt.inccommand = "split"
 opt.smarttab = true
 opt.breakindent = true
 opt.wrap = false -- No Wrap lines
-opt.backspace = { 'start', 'eol', 'indent' }
-opt.path:append { '**' } -- Finding files - Search down into subfolders
-opt.wildignore:append { '*/node_modules/*' }
+opt.backspace = { "start", "eol", "indent" }
+opt.path:append({ "**" }) -- Finding files - Search down into subfolders
+opt.wildignore:append({ "*/node_modules/*" })
 
 -- Undercurl
 vim.cmd([[let &t_Cs = "\e[4:3m"]])
@@ -41,12 +41,12 @@ vim.cmd([[let &t_Ce = "\e[4:0m"]])
 
 -- Turn off paste mode when leaving insert
 vim.api.nvim_create_autocmd("InsertLeave", {
-  pattern = '*',
-  command = "set nopaste"
+  pattern = "*",
+  command = "set nopaste",
 })
 
 -- Add asterisks in block comments
-vim.opt.formatoptions:append { 'r' }
+vim.opt.formatoptions:append({ "r" })
 
 -- use spaces for tabs and whatnot
 opt.tabstop = 2
@@ -69,6 +69,3 @@ opt.listchars = {
 
 -- Neotree keymaps for v2.0
 vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
-
--- Colorscheme
-vim.cmd([[ colorscheme tokyonight ]])
