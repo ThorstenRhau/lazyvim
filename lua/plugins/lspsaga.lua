@@ -5,7 +5,7 @@ return {
       "nvim-tree/nvim-web-devicons",
       "nvim-treesitter/nvim-treesitter",
     },
-    event = "BufRead",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require("lspsaga").setup({})
     end,
