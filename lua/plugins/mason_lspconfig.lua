@@ -25,7 +25,7 @@ return {
           "lua_ls",
           "bashls",
           "marksman",
-          "pylsp",
+          "pyright",
           "html",
         },
         automatic_installation = true,
