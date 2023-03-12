@@ -63,32 +63,24 @@ require("lazy").setup({
     event = "VeryLazy",
   },
   {
-    "folke/tokyonight.nvim",
+    "ellisonleao/gruvbox.nvim",
     lazy = true,
     opts = {
-      style = "moon",
-      light_style = "day",
-      transparent = false,
-      terminal_colors = true,
-      styles = {
-        -- Value is any valid attr-list value for `:help nvim_set_hl`
-        comments = { italic = true },
-        keywords = { italic = true },
-        functions = {},
-        variables = {},
-        -- Background styles. Can be "dark", "transparent" or "normal"
-        sidebars = "dark",
-        floats = "dark",
-      },
-      sidebars = { "qf", "help" },
-      day_brightness = 0.3, -- **Day** style. Number between 0 and 1, from dull to vibrant colors
-      hide_inactive_statusline = false,
+      undercurl = true,
+      underline = true,
+      bold = true,
+      italic = true,
+      strikethrough = true,
+      invert_selection = false,
+      invert_signs = false,
+      invert_tabline = false,
+      invert_intend_guides = false,
+      inverse = true,    -- invert background for search, diffs, statuslines and errors
+      contrast = "soft", -- can be "hard", "soft" or empty string
+      palette_overrides = {},
+      overrides = {},
       dim_inactive = true,
-      lualine_bold = false,
-      ---@diagnostic disable-next-line: unused-local
-      on_colors = function(colors) end,
-      ---@diagnostic disable-next-line: unused-local
-      on_highlights = function(highlights, colors) end,
+      transparent_mode = false,
     },
   },
   -----------------------------------------------------------------------------
@@ -100,6 +92,4 @@ require("autocmd")
 require("options")
 require("keymaps")
 
-vim.cmd.colorscheme("tokyonight")
--- vim.cmd.colorscheme("gruvbox")
--- vim.cmd.colorscheme("onedark")
+vim.cmd.colorscheme("gruvbox")
