@@ -22,13 +22,13 @@ return {
       })
       require("mason-lspconfig").setup({
         ensure_installed = {
-          "lua_ls",
-          "bashls",
-          "marksman",
-          "pyright",
-          "html",
+          -- "lua_ls",
+          -- "bashls",
+          -- "marksman",
+          -- "pyright",
+          -- "html",
         },
-        automatic_installation = true,
+        automatic_installation = false,
       })
 
       require("mason-lspconfig").setup_handlers({

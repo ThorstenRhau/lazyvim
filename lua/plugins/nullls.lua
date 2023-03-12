@@ -42,7 +42,7 @@ return {
       end
 
       null_ls.setup({
-        debug = true,
+        debug = false,
         sources = sources,
         on_attach = on_attach,
       })
@@ -55,12 +55,12 @@ return {
     opts = function()
       require("mason-null-ls").setup({
         ensure_installed = {
-          "isort",
-          "autopep8",
-          "shfmt",
-          "stylua",
-          "prettier",
-          "pylint",
+          -- "isort",
+          -- "autopep8",
+          -- "shfmt",
+          -- "stylua",
+          -- "prettier",
+          -- "pylint",
         },
       })
     end,
